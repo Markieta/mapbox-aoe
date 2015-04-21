@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Marker movement</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.8/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+</style>
+</head>
+<body>
+<div id='map'></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoiYnJha2VycyIsImEiOiJjYUxEU29JIn0.Ao4ucxWfk0_Cvhe4H5plKg';
+var map = L.mapbox.map('map', 'examples.map-i86nkdio')
+  .setView([43.642967,-79.385327], 18);
+
+var lat  =  43.642780
+var lng  = -79.393791
+
+var aoe = L.circle([lat, lng], 50)
+
+var line = 1
+window.setInterval(function() {
+    switch(line) {
+        // Front St and Spadina (Northbound): 43.642780, -79.393791
+        case 1:
+            lat += 0.00004185
+            lng += 0.000188
+
+            if(lat >= 43.645291) line = 2
+            break;
+        // University and York St:            43.645291, -79.382469
+        case 2:
+            lat -= 0.000039583
+            lng += 0.0000164
+
+            if(lat <= 43.642916) line = 3
+            break;
+        // Brenmer Blvd and York St:          43.642916, -79.381485
+        case 3:
+            lat -= 0.000008933
+            lng -= 0.000041767
+
+            if(lat <= 43.642380) line = 4
+            break;
+        // Brenmer Blvd and Lower Simcoe St:  43.642380, -79.383991
+        case 4:
+            lat += 0.000061883 
+            lng -= 0.000026217
+
+            if(lat >= 43.646093) line = 5
+            break;
+        // Wellington St and Simcoe St:       43.646093, -79.385564
+        case 5:
+            lat -= 0.000022667
+            lng -= 0.000103533
+
+            if(lat <= 43.644733) line = 6
+            break;
+        // Wellington St and Blue Jays Way:   43.644733, -79.391776
+        case 6:
+            lat += 0.000021567
+            lng -= 0.0000085
+
+            if(lat >= 43.646027) line = 7
+            break;
+        // King St and Blue Jays Way:         43.646027, -79.392286
+        case 7:
+            lat -= 0.000009767
+            lng -= 0.000047217
+
+            if(lat <= 43.645441) line = 8
+            break;
+        // King St and Spadina:               43.645441, -79.395119
+        case 8:
+            lat -= 0.00004435
+            lng += 0.000022133
+
+            if(lat <= 43.642780)
+            {
+                line = 1
+
+                // Recalibrate coordinates
+                lat =  43.642780
+                lng = -79.393791
+            }
+            break;
+    }
+
+    aoe.setLatLng(L.latLng(lat, lng))
+}, 10);
+
+aoe.addTo(map);
+</script>
+</body>
+</html>
